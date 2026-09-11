@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/abhisheksinha-989/ReCircle/internal/config"
+	"github.com/abhisheksinha-989/ReCircle/internal/handlers"
 )
 
 func main() {
@@ -14,12 +15,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-
-		w.Write([]byte(`{"status":"okay"}`))
-	})
+	mux.HandleFunc("GET /check_health", handlers.CheckHealth)
 
 	srv := http.Server{
 		Addr:         ":" + cfg.Port,
