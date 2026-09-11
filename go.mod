@@ -1,4 +1,4 @@
-module github.com/abhisheksinha-989/refurbished-api
+module github.com/abhisheksinha-989/ReCircle
 
 go 1.27.1
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/abhisheksinha-989/refurbished-api/internal/config"
+	"github.com/abhisheksinha-989/ReCircle/internal/config"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
-		w.Write([]byte(`{"status":"ok"}`))
+		w.Write([]byte(`{"status":"okay"}`))
 	})
 
 	srv := http.Server{
