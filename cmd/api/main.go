@@ -1,17 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/abhisheksinha-989/ReCircle/internal/config"
+	"github.com/abhisheksinha-989/ReCircle/internal/db"
 	"github.com/abhisheksinha-989/ReCircle/internal/handlers"
 )
 
 func main() {
 
 	cfg := config.MustLoad()
+
+	_, err := db.Connectdb(cfg.DBUrl)
+	if err != nil {
+		log.Fatalf("Database: %v", err)
+	}
+
+	fmt.Println("database opened")
+	fmt.Println("starting serverr")
 
 	mux := http.NewServeMux()
 
