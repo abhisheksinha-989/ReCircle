@@ -15,7 +15,7 @@ func main() {
 
 	cfg := config.MustLoad()
 
-	_, err := db.Connectdb(cfg.DBUrl)
+	db, err := db.Connectdb(cfg.DBUrl)
 	if err != nil {
 		log.Fatalf("Database: %v", err)
 	}
@@ -26,6 +26,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /check_health", handlers.CheckHealth)
+	mux.HandleFunc("GET /listings", handlers.List(db))
 
 	srv := http.Server{
 		Addr:         ":" + cfg.Port,
