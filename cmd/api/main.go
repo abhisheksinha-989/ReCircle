@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/abhisheksinha-989/ReCircle/internal/config"
@@ -20,10 +22,17 @@ func main() {
 		log.Fatalf("Database: %v", err)
 	}
 
+	handler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource: true,
+		Level:     slog.LevelInfo,
+	})
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
+
 	fmt.Println("database opened")
 	fmt.Println("starting serverr")
 
-	lh := handlers.NewListingHandler(db)
+	lh := handlers.NewListingHandler(db, logger)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /check_health", handlers.CheckHealth)
