@@ -11,6 +11,7 @@ import (
 	"github.com/abhisheksinha-989/ReCircle/internal/config"
 	"github.com/abhisheksinha-989/ReCircle/internal/db"
 	"github.com/abhisheksinha-989/ReCircle/internal/handlers"
+	"github.com/abhisheksinha-989/ReCircle/internal/middleware"
 )
 
 func main() {
@@ -22,11 +23,11 @@ func main() {
 		log.Fatalf("Database: %v", err)
 	}
 
-	handler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+	logHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		AddSource: true,
 		Level:     slog.LevelInfo,
 	})
-	logger := slog.New(handler)
+	logger := slog.New(logHandler)
 	slog.SetDefault(logger)
 
 	fmt.Println("database opened")
@@ -39,9 +40,11 @@ func main() {
 	mux.HandleFunc("GET /listings", lh.List)
 	mux.HandleFunc("DELETE /listings/{id}", lh.Delete)
 
+	handler := middleware.RequestId(mux)
+
 	srv := http.Server{
 		Addr:         ":" + cfg.Port,
-		Handler:      mux,
+		Handler:      handler,
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 30,
 		IdleTimeout:  time.Second * 60,
