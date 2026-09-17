@@ -13,7 +13,7 @@ const (
 )
 
 const (
-	requestId = "X-Reuest_ID"
+	requestId = "X-Request_ID"
 )
 
 func RequestId(next http.Handler) http.Handler {
